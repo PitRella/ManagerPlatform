@@ -16,7 +16,6 @@ dev = [
 
 
 [tool.mypy]
-plugins = ["sqlalchemy.ext.mypy.plugin"]
 strict = true
 local_partial_types = true
 warn_unreachable = true
