@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+{% block content %}
+    {% for project in projects %}
+        {# Project header #}
+        <div class="container-md">
+            <div class="row project-border">
+                <div class="col-md-12 text-white p-2 project-gradient-blue-dark header-text-shadow">
+                    {{ project.title }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
