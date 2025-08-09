@@ -5,7 +5,7 @@ from django.db.models.query import QuerySet
 from project.models import Project
 
 
-class DashboardView(LoginRequiredMixin, ListView[Project]):
+class DashboardView(LoginRequiredMixin, ListView):
     """
     View for displaying a paginated list of projects on the dashboard.
 
@@ -21,7 +21,9 @@ class DashboardView(LoginRequiredMixin, ListView[Project]):
     """
 
     model = Project
+    template_name = 'project/dashboard.html'
     context_object_name = 'projects'
+
     paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Project]:

@@ -1,3 +1,3 @@
 from .dashboard import DashboardView
 
-__all__ = ['dashboard', ]
+__all__ = ['DashboardView', ]
