@@ -1,4 +1,4 @@
-<div class="container-md">
+<div class="container-md todo-list-project" data-project-id="{{ project.id }}">
     <div class="project-border text-white p-2 project-gradient-blue-dark header-text-shadow d-flex align-items-center">
         <div class="col-2 col-md-1 d-flex justify-content-center">
             {#            <i class="bi bi-calendar4 fs-4"></i>#}
@@ -25,6 +25,7 @@
                data-project-id="{{ project.id }}"
                style="cursor: pointer;"
                title="Delete project"></i>
+            {% csrf_token %}
         </div>
     </div>
     {# Creating task #}

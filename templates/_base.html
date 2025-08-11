@@ -11,6 +11,8 @@
            maximum-scale=1.0,
            minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/icons/favicon.ico' %}">
     {#  Block for title content  #}
     <title>{% block title %} {% endblock %}</title>
     {# Attach main bootstrap #}
@@ -44,8 +46,22 @@
     ></script>
     {# Configure HTMX to include CSRF token in all requests #}
     <script>
-        document.body.addEventListener('htmx:configRequest', function (evt) {
-            evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        // Configure HTMX to include CSRF token in all requests
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.addEventListener('htmx:configRequest', function (evt) {
+                evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+            });
+        });
+        
+        // Also add CSRF token to all HTMX requests that don't have it
+        document.addEventListener('htmx:beforeRequest', function (evt) {
+            if (!evt.detail.headers['X-CSRFToken']) {
+                const token = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
+                             document.querySelector('meta[name=csrf-token]')?.getAttribute('content');
+                if (token) {
+                    evt.detail.headers['X-CSRFToken'] = token;
+                }
+            }
         });
     </script>
     {# Load custom statis #}

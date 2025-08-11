@@ -1,9 +1,12 @@
 {% extends '_base.html' %}
+{% load static %}
 
 {% block title %}
     Dashboard
 {% endblock %}
 {% block content %}
+    {% csrf_token %}
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     {# Projects block #}
     <div id="projects-container">
         {% for project in projects %}
@@ -37,6 +40,7 @@
                     <button class="btn project-gradient-blue-dark text-white ps-0"
                             hx-get="{% url 'projects:create' %}"
                             hx-target="#modal-body"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
                             data-bs-toggle="modal"
                             data-bs-target="#createProjectModal">
                         <svg
@@ -58,4 +62,5 @@
             </div>
         </div>
     </div>
+    <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
