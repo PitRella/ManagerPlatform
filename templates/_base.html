@@ -44,26 +44,8 @@
     <script
             src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"
     ></script>
-    {# Configure HTMX to include CSRF token in all requests #}
-    <script>
-        // Configure HTMX to include CSRF token in all requests
-        document.addEventListener('DOMContentLoaded', function () {
-            document.body.addEventListener('htmx:configRequest', function (evt) {
-                evt.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-            });
-        });
-        
-        // Also add CSRF token to all HTMX requests that don't have it
-        document.addEventListener('htmx:beforeRequest', function (evt) {
-            if (!evt.detail.headers['X-CSRFToken']) {
-                const token = document.querySelector('[name=csrfmiddlewaretoken]')?.value || 
-                             document.querySelector('meta[name=csrf-token]')?.getAttribute('content');
-                if (token) {
-                    evt.detail.headers['X-CSRFToken'] = token;
-                }
-            }
-        });
-    </script>
+    {# Load CSRF and HTMX configuration #}
+    <script src="{% static 'js/csrf.js' %}"></script>
     {# Load custom statis #}
     <link
             rel="stylesheet"

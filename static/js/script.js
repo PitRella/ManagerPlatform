@@ -126,6 +126,8 @@ class DashboardManager {
         htmx.ajax('GET', `/dashboard/${projectId}/update/`, {
             target: titleElement,
             swap: 'outerHTML'
+        }).then(() => {
+            this.reenableButtons();
         });
     }
 

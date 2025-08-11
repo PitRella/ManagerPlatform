@@ -18,11 +18,8 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         project = form.save()
-        # Return the full title element so HTMX swaps the form back to display mode
-        html = render_to_string(
-            'project/edit.html', {
-                'project': project
-            }, request=self.request)
+        # Return the title element in display mode, not the form
+        html = f'<h4 class="mb-0 project-title" hx-target="this" hx-swap="outerHTML" style="cursor: pointer;" title="Click to edit title">{project.title}</h4>'
         return HttpResponse(html)
 
     def form_invalid(self, form):
