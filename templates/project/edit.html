@@ -1,0 +1,14 @@
+<form hx-post="{% url 'projects:update' project.pk %}"
+      hx-target="this"
+      hx-swap="outerHTML"
+      class="d-inline">
+    {% csrf_token %}
+    {{ form.title }}
+    {% if form.title.errors %}
+        <div class="text-danger small mt-1">
+            {% for error in form.title.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+</form>
