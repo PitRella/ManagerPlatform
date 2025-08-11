@@ -12,7 +12,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     """View for creating new projects via HTMX."""
     model = Project
     form_class = ProjectForm
-    template_name = 'project/project_form.html'
+    template_name = 'project/create.html'
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
@@ -23,7 +23,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         )
         # Return the new project HTML to be inserted
         html = render_to_string(
-            'project/project_item.html',
+            'project/project.html',
             {
                 'project': project
             },
@@ -33,7 +33,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     def form_invalid(self, form):
         # Return form with errors
         html = render_to_string(
-            'project/project_form.html',
+            'project/create.html',
             {
                 'form': form
             },
