@@ -7,7 +7,7 @@
     {# Projects block #}
     <div id="projects-container">
         {% for project in projects %}
-            {% include 'project/project.html' with project=project %}
+            {% include 'project/project_item.html' with project=project %}
         {% endfor %}
     </div>
     {#  Modal for for creating a project  #}

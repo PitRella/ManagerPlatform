@@ -17,13 +17,9 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         project = form.save()
-        messages.success(
-            self.request,
-            f'Project "{project.title}" was created successfully!'
-        )
         # Return the new project HTML to be inserted
         html = render_to_string(
-            'project/project.html',
+            'project/project_item.html',
             {
                 'project': project
             },
