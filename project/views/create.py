@@ -5,13 +5,13 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from project.models import Project
-from project.forms import ProjectForm
+from project.forms import CreateForm
 
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     """View for creating new projects via HTMX."""
     model = Project
-    form_class = ProjectForm
+    form_class = CreateForm
     template_name = 'project/create.html'
 
     def form_valid(self, form):
