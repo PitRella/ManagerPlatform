@@ -1,6 +1,6 @@
 from django.urls import path
 from project.views import DashboardView
-from project.views.project_create import ProjectCreateView
+from project.views.create import ProjectCreateView
 
 app_name = 'projects'
 urlpatterns = [
