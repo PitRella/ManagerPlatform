@@ -1,38 +1,65 @@
- <div class="container-md">
-            <div class="row project-border">
-                <div class="col-md-12 text-white p-2 project-gradient-blue-dark header-text-shadow">
-                    {{ project.title }}
-                </div>
-            </div>
+<div class="container-md">
+    <div class="project-border text-white p-2 project-gradient-blue-dark header-text-shadow d-flex align-items-center">
+        <div class="col-2 col-md-1 d-flex justify-content-center">
+{#            <i class="bi bi-calendar4 fs-4"></i>#}
         </div>
-        {# Creating task #}
-        <div class="container-md">
-            <div class="row white-border">
-                <div class="col-md-12 p-2 project-gradient-grey-white project-text-shadow d-flex align-items-center">
-                    <div class="input-group">
-                        <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="40"
-                                height="40"
-                                stroke="currentColor"
-                                stroke-width="5"
-                                color="#5d9275"
-                                viewBox="0 0 24 24"
+        <div class="col-8 col-md-10 d-flex align-items-center">
+            <h4 class="mb-0 project-title"
+                    {#                hx-get="{% url 'projects:update' project.pk %}"#}
+                hx-target="this"
+                hx-swap="outerHTML"
+                style="cursor: pointer;"
+                title="Click to edit title">
+                {{ project.title }}
+            </h4>
+        </div>
+        <div class="col-2 col-md-1 d-flex justify-content-end align-items-center gap-3 px-4">
+            <i class="bi bi-pen text-light-white fa-lg edit-project-btn"
+               aria-hidden="true"
+               data-project-id="{{ project.id }}"
+               style="cursor: pointer;"
+               title="Edit project title"></i>
+            <span class="vr opacity-50 mx-2"></span>
+            <i class="bi bi-trash3 text-light-white fa-lg delete-project-btn"
+               aria-hidden="true"
+               data-project-id="{{ project.id }}"
+               style="cursor: pointer;"
+               title="Delete project"></i>
+        </div>
+    </div>
+    {# Creating task #}
+    <div class="container-md">
+        <div class="row white-border">
+            <div class="col-md-12 p-2 project-gradient-grey-white project-text-shadow d-flex align-items-center">
+                <div class="input-group">
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="40"
+                            height="40"
+                            stroke="currentColor"
+                            stroke-width="5"
+                            color="#5d9275"
+                            viewBox="0 0 24 24"
 
-                        >
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        <span class="input-group-text bg-white border-end-0"></span>
-                        <input type="text"
-                               class="form-control search-shadow border-start-0 border-end-0"
-                               placeholder="Start typing here to create a task..."
-                               id="searchInput">
-                        <button type="button"
-                                class="btn text-white button-gradient-green-dark green-border">
-                            Add Task
-                        </button>
-                    </div>
+                    >
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span class="input-group-text bg-white border-end-0"></span>
+                    <input type="text"
+                           class="form-control search-shadow border-start-0 border-end-0"
+                           placeholder="Start typing here to create a task..."
+                           id="searchInput">
+                    <button type="button"
+                            class="btn text-white button-gradient-green-dark green-border">
+                        Add Task
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="text-muted text-center py-3"
+         id="no-tasks-message-{{ project.id }}">
+        <small>No tasks yet. Add your first task above!</small>
+    </div>
+</div>
