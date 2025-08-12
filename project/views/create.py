@@ -4,34 +4,27 @@ from django.views.generic import ListView, CreateView, DeleteView, UpdateView, \
 from django.contrib import messages
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+
+from core.mixins.views import HTMXResponseMixin
 from project.models import Project
 from project.forms import CreateForm
 
 
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(LoginRequiredMixin, HTMXResponseMixin[Project], CreateView):
     """View for creating new projects via HTMX."""
     model = Project
     form_class = CreateForm
     template_name = 'project/create.html'
+    success_template = 'project/project_item.html'
 
-    def form_valid(self, form):
+    def form_valid(self, form: CreateForm) -> HttpResponse:
         form.instance.owner = self.request.user
-        project = form.save()
-        # Return the new project HTML to be inserted
-        html = render_to_string(
-            'project/project_item.html',
-            {
-                'project': project
-            },
-            request=self.request)
-        return HttpResponse(html)
+        return super().form_valid(form)
 
-    def form_invalid(self, form):
-        # Return form with errors
+    def render_htmx_response(self, instance: Project) -> HttpResponse:
         html = render_to_string(
-            'project/create.html',
-            {
-                'form': form
-            },
-            request=self.request)
-        return HttpResponse(html, status=422)
+            self.success_template,
+            {'project': instance},
+            request=self.request
+        )
+        return HttpResponse(html)

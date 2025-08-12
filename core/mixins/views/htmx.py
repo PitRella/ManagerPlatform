@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Any, Dict, Optional, TypeVar
+from typing import Any, Dict, Optional, TypeVar, cast, Generic
 from django.db import models
 from django.forms import ModelForm
 from django.http import HttpRequest, HttpResponse
@@ -7,23 +7,24 @@ from django.template.loader import render_to_string
 from django.db.models import QuerySet
 
 QS = TypeVar('QS', bound=QuerySet[Any])
+M = TypeVar("M", bound=models.Model)
 
 
-class HTMXResponseMixin(ABC):
+class HTMXResponseMixin(ABC, Generic[M]):
     template_name: str
     success_template: Optional[str] = None
     request: HttpRequest
 
     def form_valid(
             self,
-            form: ModelForm[models.Model]
+            form: M
     ) -> HttpResponse:
-        instance = form.save()
+        instance = cast(M, form.save())
         return self.render_htmx_response(instance)
 
     def form_invalid(
             self,
-            form: ModelForm[models.Model]
+            form: M
     ) -> HttpResponse:
         html = render_to_string(
             self.template_name,
@@ -34,7 +35,7 @@ class HTMXResponseMixin(ABC):
 
     @staticmethod
     def get_form_invalid_context(
-            form: ModelForm[models.Model]
+            form: M
     ) -> Dict[str, Any]:
         return {'form': form}
 
