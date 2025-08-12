@@ -43,14 +43,14 @@ class DashboardViewTest(TestCase):
     def test_login_required(self):
         """Test that login is required to access the view."""
         response = self.client.get(self.dashboard_url)
-        self.assertEqual(response.status_code, 302)  # Redirects to login page
+        assert response.status_code == 302
 
     def test_dashboard_displays_user_projects(self):
         """Test that dashboard displays only the current user's projects."""
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get(self.dashboard_url)
 
-        self.assertEqual(response.status_code, 200)
+        assert response.status_code == 200
         self.assertTemplateUsed(response, 'project/dashboard.html')
 
         # Check that the response does not contain the other user's project
@@ -62,19 +62,18 @@ class DashboardViewTest(TestCase):
 
         # First page
         response = self.client.get(self.dashboard_url)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['projects']), 10)  # 10 projects per page
+        assert response.status_code == 200
+        assert len(response.context['projects']) == 10
 
         # Second page
         response = self.client.get(f'{self.dashboard_url}?page=2')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['projects']), 5)  # 5 remaining projects
-
+        assert response.status_code == 200
+        assert len(response.context['projects']) == 5
 
     def test_empty_dashboard(self):
         """Test that dashboard handles case with no projects."""
         # Create a new user with no projects
-        empty_user = User.objects.create_user(
+        User.objects.create_user(
             username='emptyuser',
             email='empty@example.com',
             password='testpassword'
@@ -82,10 +81,9 @@ class DashboardViewTest(TestCase):
 
         self.client.login(username='emptyuser', password='testpassword')
         response = self.client.get(self.dashboard_url)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['projects']), 0)
+        assert response.status_code == 200
+        assert len(response.context['projects']) == 0
 
         # Check that the projects container exists but is empty
-        self.assertContains(response, '<div id="projects-container">')
-        self.assertNotContains(response, 'class="todo-list-project"')
+        assert '<div id="projects-container">' in response
+        assert 'class="todo-list-project"' in response

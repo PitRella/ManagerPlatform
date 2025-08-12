@@ -24,15 +24,15 @@ class ProjectModelTest(TestCase):
 
     def test_project_creation(self):
         """Test that a project can be created."""
-        self.assertEqual(self.project.title, 'Test Project')
-        self.assertEqual(self.project.owner, self.user)
-        self.assertIsNotNone(self.project.created_at)
-        self.assertIsNotNone(self.project.updated_at)
+        assert self.project.title == 'Test Project'
+        assert self.project.owner == self.user
+        assert self.project.created_at is not None
+        assert self.project.updated_at is not None
 
     def test_project_str_representation(self):
         """Test the string representation of a project."""
         expected_str = f"Test Project ({self.user.email})"
-        self.assertEqual(str(self.project), expected_str)
+        assert str(self.project) == expected_str
 
     def test_unique_title_per_user_constraint(self):
         """Test that a user cannot have two projects with the same title."""
@@ -63,6 +63,6 @@ class ProjectModelTest(TestCase):
 
         # Test that for_user returns only projects for the specified user
         user_projects = Project.objects.for_user(self.user)
-        self.assertEqual(user_projects.count(), 2)
+        assert user_projects.count() == 2
         for project in user_projects:
-            self.assertEqual(project.owner, self.user)
+            assert project.owner == self.user

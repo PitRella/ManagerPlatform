@@ -22,7 +22,8 @@ class ProjectUpdateViewTest(TestCase):
             title='Test Project',
             owner=self.user
         )
-        self.update_url = reverse('projects:update', kwargs={'pk': self.project.pk})
+        self.update_url = reverse('projects:update',
+                                  kwargs={'pk': self.project.pk})
 
         # Create another user and their project
         self.other_user = User.objects.create_user(
@@ -34,18 +35,19 @@ class ProjectUpdateViewTest(TestCase):
             title='Other Project',
             owner=self.other_user
         )
-        self.other_update_url = reverse('projects:update', kwargs={'pk': self.other_project.pk})
+        self.other_update_url = reverse('projects:update',
+                                        kwargs={'pk': self.other_project.pk})
 
     def test_login_required(self):
         """Test that login is required to access the view."""
         response = self.client.get(self.update_url)
-        self.assertEqual(response.status_code, 302)  # Redirects to login page
+        assert response.status_code == 302 # Redirects to login page
 
     def test_get_update_form(self):
         """Test that GET request returns the update form."""
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get(self.update_url)
-        self.assertEqual(response.status_code, 200)
+        assert response.status_code == 200
         self.assertTemplateUsed(response, 'project/edit.html')
         self.assertContains(response, 'form')
         self.assertContains(response, self.project.title)
@@ -62,12 +64,10 @@ class ProjectUpdateViewTest(TestCase):
         )
 
         # Check response
-        self.assertEqual(response.status_code, 200)
-
+        assert response.status_code == 200
         # Check that the project was updated
         self.project.refresh_from_db()
-        self.assertEqual(self.project.title, 'Updated Project Title')
-
+        assert self.project.title == 'Updated Project Title'
         # Check that the response contains the updated title
         self.assertContains(response, 'Updated Project Title')
 
@@ -79,8 +79,7 @@ class ProjectUpdateViewTest(TestCase):
         response = self.client.get(self.other_update_url)
 
         # Should return 404 Not Found
-        self.assertEqual(response.status_code, 404)
-
+        assert response.status_code == 404
         # Try to update via POST
         response = self.client.post(
             self.other_update_url,
@@ -89,8 +88,8 @@ class ProjectUpdateViewTest(TestCase):
         )
 
         # Should return 404 Not Found
-        self.assertEqual(response.status_code, 404)
+        assert response.status_code == 404
 
         # Check that the other project was not updated
         self.other_project.refresh_from_db()
-        self.assertEqual(self.other_project.title, 'Other Project')
+        assert self.other_project.title == 'Other Project'

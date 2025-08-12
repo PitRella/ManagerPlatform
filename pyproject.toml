@@ -132,7 +132,8 @@ docstring-code-format = false # Do not format docstrings
     "COM812", # comma formatting conflicts with formatter
     "Q000", # quote style conflicts with formatter
     "Q003", # mixed quotes conflicts with formatter
-    "PLR2004" # magic value, for status codes
+    "PLR2004", # magic value, for status codes
+    "PT027",
 ]
 
 "src/*.py" = [
