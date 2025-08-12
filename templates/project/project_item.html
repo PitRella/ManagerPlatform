@@ -6,7 +6,7 @@
         </div>
         <div class="col-8 col-md-10 d-flex align-items-center">
             <h4 class="mb-0 project-title"
-                    {#                hx-get="{% url 'projects:update' project.pk %}"#}
+                hx-get="{% url 'projects:update' project.pk %}"
                 hx-target="this"
                 hx-swap="outerHTML"
                 style="cursor: pointer;"
