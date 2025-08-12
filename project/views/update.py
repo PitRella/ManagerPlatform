@@ -2,11 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import UpdateView
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+
+from core.mixins.views import HTMXResponseMixin
 from project.models import Project
 from project.forms import EditForm
 
 
-class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, HTMXResponseMixin, UpdateView):
     """View for updating project titles via HTMX."""
     model = Project
     form_class = EditForm
@@ -16,19 +18,11 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
         """Only projects for current user."""
         return Project.objects.for_user(self.request.user)
 
-    def form_valid(self, form):
-        project = form.save()
-        # Return the title element in display mode, not the form
-        html = f'<h4 class="mb-0 project-title" hx-target="this" hx-swap="outerHTML" style="cursor: pointer;" title="Click to edit title">{project.title}</h4>'
-        return HttpResponse(html)
-
-    def form_invalid(self, form):
-        # Return form with errors
-        html = render_to_string(
-            'project/edit.html',
-            {
-                'form': form
-            },
-            request=self.request
+    def render_htmx_response(self, instance: Project) -> HttpResponse:
+        html = (
+            f'<h4 class="mb-0 project-title" '
+            f'hx-target="this" hx-swap="outerHTML" '
+            f'style="cursor: pointer;" '
+            f'title="Click to edit title">{instance.title}</h4>'
         )
-        return HttpResponse(html, status=422)
+        return HttpResponse(html)
