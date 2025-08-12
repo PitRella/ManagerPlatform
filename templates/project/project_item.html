@@ -1,7 +1,8 @@
-<div class="container-sm pt-5 todo-list-project" data-project-id="{{ project.id }}">
+<div class="container-sm pt-5 todo-list-project"
+     data-project-id="{{ project.id }}">
     <div class="project-border text-white p-2 project-gradient-blue-dark header-text-shadow d-flex align-items-center">
         <div class="col-2 col-md-1 d-flex justify-content-center">
-            {#            <i class="bi bi-calendar4 fs-4"></i>#}
+            <i class="bi bi-calendar4 fs-4"></i>
         </div>
         <div class="col-8 col-md-10 d-flex align-items-center">
             <h4 class="mb-0 project-title"
@@ -59,8 +60,17 @@
             </div>
         </div>
     </div>
-    <div class="text-muted text-center py-3"
-         id="no-tasks-message-{{ project.id }}">
-        <small>No tasks yet. Add your first task above!</small>
+    <div class="container-md shadow rounded-bottom-only todo-list"
+         id="tasks-container-{{ project.id }}">
+        {% if project.tasks.all %}
+            {% for task in project.tasks.all %}
+                {% include 'task/task_item.html' with task=task %}
+            {% endfor %}
+        {% else %}
+            <div class="text-muted text-center py-3"
+                 id="no-tasks-message-{{ project.id }}">
+                <small>No tasks yet. Add your first task above!</small>
+            </div>
+        {% endif %}
     </div>
 </div>
