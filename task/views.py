@@ -86,3 +86,15 @@ class TaskUpdateView(UpdateView):
         return HttpResponse(html, status=422)
 
 
+
+class TaskDeleteView(DeleteView):
+    model = Task
+
+    def delete(self, request, *args, **kwargs):
+        task = self.get_object()
+        task.delete()
+        return HttpResponse('', status=204)
+
+    def post(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+
