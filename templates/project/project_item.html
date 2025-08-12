@@ -51,9 +51,16 @@
                     <input type="text"
                            class="form-control search-shadow border-start-0 border-end-0"
                            placeholder="Start typing here to create a task..."
-                           id="searchInput">
+                           id="searchInput-{{ project.id }}"
+                           name="searchInput-{{ project.id }}">
                     <button type="button"
-                            class="btn text-white button-gradient-green-dark green-border">
+                            class="btn text-white button-gradient-green-dark green-border add-task-btn"
+                            hx-post="{% url 'tasks:create_simple' project.id %}"
+                            hx-target="#tasks-container-{{ project.id }}"
+                            hx-swap="beforeend"
+                            hx-include="[name='searchInput-{{ project.id }}']"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            hx-trigger="click">
                         Add Task
                     </button>
                 </div>
