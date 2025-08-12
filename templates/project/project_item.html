@@ -33,34 +33,37 @@
     <div class="container-md">
         <div class="row white-border">
             <div class="col-md-12 p-2 project-gradient-grey-white project-text-shadow d-flex align-items-center">
-                <div class="input-group">
+                <div class="col-2 col-md-1 d-flex justify-content-center fs-1">
                     <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="40"
                             height="40"
                             stroke="currentColor"
-                            stroke-width="5"
+                            stroke-width="4"
                             color="#5d9275"
                             viewBox="0 0 24 24"
-
                     >
                         <line x1="12" y1="5" x2="12" y2="19"></line>
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
-                    <span class="input-group-text bg-white border-end-0"></span>
+                </div>
+                <div class="col-7 col-md-9 ">
                     <input type="text"
-                           class="form-control search-shadow border-start-0 border-end-0"
+                           class="form-control search-shadow"
                            placeholder="Start typing here to create a task..."
                            id="searchInput-{{ project.id }}"
                            name="searchInput-{{ project.id }}">
+                </div>
+                <div class="col-3 col-md-2 d-flex justify-content-center">
                     <button type="button"
-                            class="btn text-white button-gradient-green-dark green-border add-task-btn"
+                            class="btn btn-success gradient-green-dark green-border"
                             hx-post="{% url 'tasks:create_simple' project.id %}"
                             hx-target="#tasks-container-{{ project.id }}"
                             hx-swap="beforeend"
                             hx-include="[name='searchInput-{{ project.id }}']"
                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                            hx-trigger="click">
+                            hx-trigger="click"
+                            hx-on="htmx:afterRequest: if (event.detail.xhr && event.detail.xhr.status === 200) { const input = document.getElementById('searchInput-{{ project.id }}'); if (input) { input.value = ''; } const msg = document.getElementById('no-tasks-message-{{ project.id }}'); if (msg) { msg.remove(); } if (window.dashboardManager) { window.dashboardManager.rebindEventHandlers(); window.dashboardManager.initSortableLists(); } }">
                         Add Task
                     </button>
                 </div>
