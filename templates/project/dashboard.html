@@ -1,0 +1,67 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+{% block content %}
+    {% csrf_token %}
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    {# Projects block #}
+    <div id="projects-container">
+        {% for project in projects %}
+            {% include 'project/project_item.html' with project=project %}
+        {% endfor %}
+    </div>
+    {#  Modal for for creating a project  #}
+    <div class="modal fade" id="createProjectModal" tabindex="-1"
+         aria-labelledby="createProjectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createProjectModalLabel">
+                        Add List
+                    </h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    {# Project form will be loaded here #}
+                </div>
+            </div>
+        </div>
+    </div>
+    {# Add a project button #}
+    <div class="fixed-bottom mb-3">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-2">
+                    <button class="btn project-gradient-blue-dark text-white ps-0"
+                            hx-get="{% url 'projects:create' %}"
+                            hx-target="#modal-body"
+                            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                            data-bs-toggle="modal"
+                            data-bs-target="#createProjectModal">
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="40"
+                                height="40"
+                                stroke="currentColor"
+                                stroke-width="4"
+                                color="#33476f"
+                                viewBox="0 0 24 24"
+
+                        >
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add TODO List
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}
