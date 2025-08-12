@@ -1,23 +1,48 @@
+from typing import Any
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import UpdateView
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.core.exceptions import ValidationError
+
+from core.mixins.views import HTMXResponseMixin
 from task.models import Task
 from task.forms import TaskEditForm
+from task.services import TaskService
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(
+    LoginRequiredMixin,
+    HTMXResponseMixin[Task],
+    UpdateView
+):
     """View for updating task text via HTMX."""
+    
     model = Task
     form_class = TaskEditForm
     template_name = 'task/task_text_edit.html'
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.task_service: TaskService = TaskService()
+
     def form_valid(self, form):
         """Handle valid form submission."""
-        task = form.save()
-        html = render_to_string('task/task_text_display.html', {
-            'task': task
-        }, request=self.request)
-        return HttpResponse(html)
+        try:
+            task: Task = self.task_service.update_task(
+                task_id=self.get_object().id,
+                user=self.request.user,
+                text=form.cleaned_data['text']
+            )
+            
+            html = render_to_string('task/task_text_display.html', {
+                'task': task
+            }, request=self.request)
+            return HttpResponse(html)
+            
+        except ValidationError as e:
+            form.add_error('text', e)
+            return self.form_invalid(form)
 
     def form_invalid(self, form):
         """Handle invalid form submission."""
