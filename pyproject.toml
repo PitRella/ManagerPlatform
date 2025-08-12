@@ -109,6 +109,7 @@ docstring-code-format = false # Do not format docstrings
     "COM812", # Formatting conflict
     "Q000", # flake8-quotes
     "Q003", # flake8-quotes
+    "RUF012" # TypeVar
 ]
 "manage.py" = [
     "PLC0415" # Import not at top of the file

@@ -6,6 +6,13 @@ from core.mixins.models import TimestampMixin
 
 
 class ProjectManager(models.Manager):
+    """
+    Custom manager for Project model providing user-specific queries.
+
+    Extends the default Django model manager to add methods
+    for filtering projects by user ownership.
+    """
+
     def for_user(self, user) -> models.QuerySet:
         """Returns projects for the given user."""
         return self.filter(owner=user)
