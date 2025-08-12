@@ -30,6 +30,4 @@ class DashboardView(LoginRequiredMixin, ListView):
         """Returns projects for the current user."""
         return Project.objects.for_user(
             self.request.user
-        ).order_by(
-            'created_at'
         )
