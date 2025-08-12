@@ -93,8 +93,6 @@ LOG_LEVEL=DEBUG
 # Database (for production, use PostgreSQL)
 DATABASE_URL=sqlite:///db.sqlite3
 
-# Email (for development)
-EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
 ```
 
 #### 4. Run Migrations
@@ -120,7 +118,7 @@ The application will be available at `http://127.0.0.1:8000/`
 ## 📱 Usage Guide
 
 ### Getting Started
-
+![img.png](img.png)
 1. **Sign Up**: Visit the homepage and click "Sign Up" to create a new account
 2. **Login**: Use your email and password to access your dashboard
 3. **Create Projects**: Click the floating "Add TODO List" button to create new projects
