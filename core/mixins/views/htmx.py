@@ -1,10 +1,10 @@
-from abc import abstractmethod, ABC
-from typing import Any, Dict, Optional, TypeVar, cast, Generic
+from abc import ABC, abstractmethod
+from typing import Any, Generic, TypeVar, cast
+
 from django.db import models
-from django.forms import ModelForm
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.loader import render_to_string
-from django.db.models import QuerySet
 
 QS = TypeVar('QS', bound=QuerySet[Any])
 M = TypeVar("M", bound=models.Model)
@@ -12,7 +12,7 @@ M = TypeVar("M", bound=models.Model)
 
 class HTMXResponseMixin(ABC, Generic[M]):
     template_name: str
-    success_template: Optional[str] = None
+    success_template: str | None = None
     request: HttpRequest
 
     def form_valid(
@@ -36,7 +36,7 @@ class HTMXResponseMixin(ABC, Generic[M]):
     @staticmethod
     def get_form_invalid_context(
             form: M
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         return {'form': form}
 
     @abstractmethod

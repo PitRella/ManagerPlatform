@@ -1,17 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView, \
-    View
-from django.contrib import messages
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.views.generic import (
+    CreateView,
+)
 
 from core.mixins.views import HTMXResponseMixin
-from project.models import Project
 from project.forms import CreateForm
+from project.models import Project
 
 
 class ProjectCreateView(LoginRequiredMixin, HTMXResponseMixin[Project], CreateView):
     """View for creating new projects via HTMX."""
+
     model = Project
     form_class = CreateForm
     template_name = 'project/create.html'

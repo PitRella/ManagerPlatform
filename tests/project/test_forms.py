@@ -1,5 +1,5 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 from project.forms import CreateForm, EditForm
 from project.models import Project
@@ -97,7 +97,7 @@ class EditFormTest(TestCase):
         form_data = {'title': 'Updated Project'}
         form = EditForm(data=form_data, instance=self.project)
         self.assertTrue(form.is_valid())
-        
+
         updated_project = form.save()
         self.assertEqual(updated_project.title, 'Updated Project')
         self.assertEqual(updated_project.id, self.project.id)

@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView
 from django.db.models.query import QuerySet
+from django.views.generic import ListView
 
 from project.models import Project
 
@@ -18,6 +18,7 @@ class DashboardView(LoginRequiredMixin, ListView):
         template_name: Template used for rendering the view
         context_object_name: Name used for the project list in template context
         paginate_by: Number of projects displayed per page
+
     """
 
     model = Project

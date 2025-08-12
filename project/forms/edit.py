@@ -1,5 +1,8 @@
 from django import forms
+
 from project.models import Project
+
+
 class EditForm(forms.ModelForm):
     """Form for editing project title inline."""
 

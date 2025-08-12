@@ -1,8 +1,11 @@
 from django.urls import path
-from project.views import (DashboardView,
+
+from project.views import (
+                           DashboardView,
                            ProjectCreateView,
                            ProjectDeleteView,
-                           ProjectUpdateView)
+                           ProjectUpdateView,
+)
 
 app_name = 'projects'
 urlpatterns = [

@@ -1,6 +1,6 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.db.utils import IntegrityError
+from django.test import TestCase
 
 from project.models import Project
 
@@ -49,7 +49,7 @@ class ProjectModelTest(TestCase):
             title='Another Project',
             owner=self.user
         )
-        
+
         # Create a project for another user
         another_user = User.objects.create_user(
             username='anotheruser',
@@ -60,7 +60,7 @@ class ProjectModelTest(TestCase):
             title='Other User Project',
             owner=another_user
         )
-        
+
         # Test that for_user returns only projects for the specified user
         user_projects = Project.objects.for_user(self.user)
         self.assertEqual(user_projects.count(), 2)

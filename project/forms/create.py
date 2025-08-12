@@ -1,5 +1,7 @@
 from django import forms
+
 from project.models import Project
+
 
 class CreateForm(forms.ModelForm):
     """Form for creating and editing projects."""

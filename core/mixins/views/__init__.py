@@ -1,3 +1,3 @@
-from .htmx import HTMXResponseMixin, HTMXDeleteMixin
+from .htmx import HTMXDeleteMixin, HTMXResponseMixin
 
-__all__ = ['HTMXResponseMixin','HTMXDeleteMixin']
+__all__ = ['HTMXDeleteMixin', 'HTMXResponseMixin']
