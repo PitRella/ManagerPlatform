@@ -56,14 +56,13 @@
                 </div>
                 <div class="col-3 col-md-2 d-flex justify-content-center">
                     <button type="button"
-                            class="btn btn-success gradient-green-dark green-border"
+                            class="btn btn-success gradient-green-dark green-border add-task-btn"
                             hx-post="{% url 'tasks:create_simple' project.id %}"
                             hx-target="#tasks-container-{{ project.id }}"
                             hx-swap="beforeend"
                             hx-include="[name='searchInput-{{ project.id }}']"
                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                            hx-trigger="click"
-                            hx-on="htmx:afterRequest: if (event.detail.xhr && event.detail.xhr.status === 200) { const input = document.getElementById('searchInput-{{ project.id }}'); if (input) { input.value = ''; } const msg = document.getElementById('no-tasks-message-{{ project.id }}'); if (msg) { msg.remove(); } if (window.dashboardManager) { window.dashboardManager.rebindEventHandlers(); window.dashboardManager.initSortableLists(); } }">
+                            hx-trigger="click">
                         Add Task
                     </button>
                 </div>

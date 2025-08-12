@@ -1,6 +1,6 @@
 /**
  * HTMX Event Handlers
- * Handles post-swap cleanup and reinitialization
+ * Handles post-swap cleanup, reinitialization, and task operations
  */
 
 class HtmxHandlers {
