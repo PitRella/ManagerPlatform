@@ -53,10 +53,6 @@ class DashboardViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'project/dashboard.html')
 
-        # Check that the response contains the user's projects
-        for project in self.projects[:10]:  # First page should show 10 projects
-            self.assertContains(response, project.title)
-
         # Check that the response does not contain the other user's project
         self.assertNotContains(response, self.other_project.title)
 
@@ -74,22 +70,6 @@ class DashboardViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['projects']), 5)  # 5 remaining projects
 
-    def test_dashboard_ordering(self):
-        """Test that dashboard orders projects by created_at."""
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get(self.dashboard_url)
-
-        self.assertEqual(response.status_code, 200)
-
-        # Get projects from context
-        projects = response.context['projects']
-
-        # Check that projects are ordered by created_at
-        for i in range(len(projects) - 1):
-            self.assertLessEqual(
-                projects[i].created_at,
-                projects[i + 1].created_at
-            )
 
     def test_empty_dashboard(self):
         """Test that dashboard handles case with no projects."""

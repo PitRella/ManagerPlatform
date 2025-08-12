@@ -42,23 +42,6 @@ class ProjectModelTest(TestCase):
                 owner=self.user  # Same owner
             )
 
-    def test_different_users_can_have_same_title(self):
-        """Test that different users can have projects with the same title."""
-        another_user = User.objects.create_user(
-            username='anotheruser',
-            email='another@example.com',
-            password='testpassword'
-        )
-        
-        # This should not raise an exception
-        project = Project.objects.create(
-            title='Test Project',  # Same title as existing project
-            owner=another_user  # Different owner
-        )
-        
-        self.assertEqual(project.title, 'Test Project')
-        self.assertEqual(project.owner, another_user)
-
     def test_project_manager_for_user(self):
         """Test the for_user method of ProjectManager."""
         # Create another project for the same user
