@@ -98,3 +98,92 @@ class TaskDeleteView(DeleteView):
     def post(self, request, *args, **kwargs):
         return self.delete(request, *args, **kwargs)
 
+
+@require_POST
+def reorder_tasks(request):
+    try:
+        payload = json.loads(request.body.decode('utf-8'))
+        order = payload.get('order', [])
+    except Exception:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    for item in order:
+        try:
+            task = Task.objects.get(pk=item['id'])
+            task.priority = int(item['position'])
+            task.save(update_fields=['priority'])
+        except Exception:
+            continue
+
+    return JsonResponse({'status': 'ok'})
+
+
+def create_task_simple(request, project_id):
+    """Simple view for creating tasks without CSRF check."""
+    if request.method == 'POST':
+        task_text = request.POST.get('searchInput-' + str(project_id),
+                                     '').strip()
+
+        if not task_text:
+            return HttpResponse('Task text cannot be empty.', status=400)
+
+        try:
+            project = Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            return HttpResponse('Project not found.', status=404)
+
+        max_priority = Task.objects.filter(project=project).aggregate(
+            models.Max('priority')
+        )['priority__max'] or 0
+        next_priority = max_priority + 1
+
+        task = Task.objects.create(
+            text=task_text,
+            project=project,
+            priority=next_priority
+        )
+
+        task_html = render_to_string('task/task_item.html', {
+            'task': task
+        }, request=request)
+
+        response_html = task_html
+
+        if project_id:
+            oob_clear_input = render_to_string('task/oob_clear_input.html', {
+                'project_id': project_id
+            }, request=request)
+
+            oob_remove_message = render_to_string(
+                'task/oob_remove_no_tasks.html', {
+                    'project_id': project_id
+                }, request=request)
+
+            response_html += oob_clear_input + oob_remove_message
+
+        return HttpResponse(response_html)
+
+    return HttpResponse('Method not allowed', status=405)
+
+
+@require_POST
+def toggle_task(request, pk):
+    """Toggle the completed status of a task."""
+    try:
+        task = Task.objects.get(pk=pk)
+        payload = json.loads(request.body.decode('utf-8'))
+        completed = payload.get('completed', False)
+
+        task.completed = completed
+        task.save(update_fields=['completed'])
+
+        return JsonResponse({
+            'status': 'success',
+            'completed': task.completed
+        })
+    except Task.DoesNotExist:
+        return JsonResponse({'error': 'Task not found'}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
