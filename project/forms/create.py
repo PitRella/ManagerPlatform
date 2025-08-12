@@ -21,10 +21,10 @@ class CreateForm(forms.ModelForm):  # type: ignore
 
     def clean_title(self) -> str:
         """Validate that title is unique for the current user."""
-        title = self.cleaned_data.get('title')
+        title: str | None = self.cleaned_data.get('title')
         if title:
             title = title.strip()
             if not title:
                 raise forms.ValidationError('Project title cannot be empty.')
-        return title  # type: ignore
+        return title
 

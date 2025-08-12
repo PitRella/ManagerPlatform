@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DeleteView
 from django.http import HttpResponse
@@ -28,11 +29,11 @@ class ProjectDeleteView(
     model = Project
     template_name = 'project/delete.html'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.project_service = ProjectService()
+        self.project_service: ProjectService = ProjectService()
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Any, *args: Any, **kwargs: Any) -> HttpResponse:
         """Handle POST request for HTMX-based deletion using service layer."""
         try:
             self.project_service.delete_project(

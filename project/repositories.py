@@ -1,16 +1,20 @@
-from typing import Optional
+from typing import Optional, Dict, List, TYPE_CHECKING
 from django.db.models import QuerySet
 from django.contrib.auth import get_user_model
 
 from project.models import Project
 
-User = get_user_model()
+if TYPE_CHECKING:
+    from django.contrib.auth.models import AbstractUser
+    User = AbstractUser
+else:
+    User = get_user_model()
 
 
 class ProjectRepository:
     """Repository for managing Project data access operations."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.model = Project
 
     def get_user_projects(
@@ -20,7 +24,7 @@ class ProjectRepository:
             include_archived: bool = False
     ) -> QuerySet[Project]:
         """Get projects for a specific user."""
-        queryset = self.model.objects.for_user(user)
+        queryset: QuerySet[Project] = self.model.objects.for_user(user)
 
         if limit:
             queryset = queryset[:limit]
@@ -50,7 +54,7 @@ class ProjectRepository:
             user: User
     ) -> Project:
         """Update an existing project."""
-        project = self.get_project_by_id(project_id, user)
+        project: Project = self.get_project_by_id(project_id, user)
         project.title = title
         project.save()
         return project
@@ -61,7 +65,7 @@ class ProjectRepository:
             user: User
     ) -> bool:
         """Delete a project."""
-        project = self.get_project_by_id(project_id, user)
+        project: Project = self.get_project_by_id(project_id, user)
         project.delete()
         return True
 
@@ -76,10 +80,10 @@ class ProjectRepository:
     def get_project_stats(
             self,
             user: User
-    ) -> dict:
+    ) -> Dict[str, int]:
         """Get project statistics for a user."""
-        total_projects = self.model.objects.for_user(user).count()
-        active_projects = total_projects
+        total_projects: int = self.model.objects.for_user(user).count()
+        active_projects: int = total_projects
         return {
             'total_projects': total_projects,
             'active_projects': active_projects,

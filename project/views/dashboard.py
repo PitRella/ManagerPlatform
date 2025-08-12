@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.db.models.query import QuerySet
 from django.views.generic import ListView
 

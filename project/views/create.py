@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -24,9 +25,9 @@ class ProjectCreateView(
     template_name = 'project/create.html'
     success_template = 'project/project_item.html'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.project_service = ProjectService()
+        self.project_service: ProjectService = ProjectService()
 
     def form_valid(
             self,
@@ -42,7 +43,7 @@ class ProjectCreateView(
 
         """
         try:
-            project = self.project_service.create_project(
+            project: Project = self.project_service.create_project(
                 title=form.cleaned_data['title'],
                 user=self.request.user
             )

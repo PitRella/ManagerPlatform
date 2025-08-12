@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
 from django.http import HttpResponse
@@ -31,9 +32,9 @@ class ProjectUpdateView(
     form_class = EditForm
     template_name = 'project/edit.html'
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.project_service = ProjectService()
+        self.project_service: ProjectService = ProjectService()
 
     def get_queryset(
             self
@@ -46,10 +47,10 @@ class ProjectUpdateView(
         """
         return Project.objects.for_user(self.request.user)
 
-    def form_valid(self, form):
+    def form_valid(self, form: Any) -> HttpResponse:
         """Process valid form submission using service layer."""
         try:
-            project = self.project_service.update_project(
+            project: Project = self.project_service.update_project(
                 project_id=self.get_object().id,
                 title=form.cleaned_data['title'],
                 user=self.request.user

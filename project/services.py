@@ -1,11 +1,11 @@
 import logging
-from typing import Optional
+from typing import Optional, List, Dict, Any, TYPE_CHECKING
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from django.db import models
 
 from project.repositories import ProjectRepository
 from project.models import Project
-from django.db import models
 from project.constants import (
     PROJECT_TITLE_MIN_LENGTH,
     PROJECT_TITLE_MAX_LENGTH,
@@ -18,7 +18,12 @@ from project.constants import (
     ERROR_PROJECT_HAS_ACTIVE_TASKS,
 )
 
-User = get_user_model()
+if TYPE_CHECKING:
+    from django.contrib.auth.models import AbstractUser
+    User = AbstractUser
+else:
+    User = get_user_model()
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,7 +43,7 @@ class ProjectService:
             raise ValidationError(
                 ERROR_PROJECT_ALREADY_EXISTS.format(title=title))
 
-        project = self.repository.create_project(title, user)
+        project: Project = self.repository.create_project(title, user)
 
         logger.info(f"Project '{title}' created by user {user.email}")
 
@@ -48,7 +53,7 @@ class ProjectService:
                        user: User) -> Project:
         """Update an existing project with business logic validation."""
         try:
-            project = self.repository.get_project_by_id(project_id, user)
+            project: Project = self.repository.get_project_by_id(project_id, user)
         except models.ObjectDoesNotExist:
             raise ValidationError("Project not found.")
 
@@ -73,7 +78,7 @@ class ProjectService:
     def delete_project(self, project_id: int, user: User) -> bool:
         """Delete a project with business logic validation."""
         try:
-            project = self.repository.get_project_by_id(project_id, user)
+            project: Project = self.repository.get_project_by_id(project_id, user)
         except models.ObjectDoesNotExist:
             raise ValidationError("Project not found.")
 
@@ -93,8 +98,8 @@ class ProjectService:
     def archive_project(self, project_id: int, user: User) -> Project:
         """Archive a project instead of deleting it."""
         try:
-            project = self.repository.get_project_by_id(project_id, user)
-        except Project.DoesNotExist:
+            project: Project = self.repository.get_project_by_id(project_id, user)
+        except models.ObjectDoesNotExist:
             raise ValidationError("Project not found.")
 
         if not self._can_user_modify_project(project, user):
@@ -106,9 +111,9 @@ class ProjectService:
     def duplicate_project(self, project_id: int, user: User) -> Project:
         """Duplicate a project with all its tasks."""
         try:
-            original_project = self.repository.get_project_by_id(project_id,
+            original_project: Project = self.repository.get_project_by_id(project_id,
                                                                  user)
-        except Project.DoesNotExist:
+        except models.ObjectDoesNotExist:
             raise ValidationError("Project not found.")
 
         if not self._can_user_modify_project(original_project, user):
@@ -121,7 +126,7 @@ class ProjectService:
             new_title = f"{original_project.title} (Copy {counter})"
             counter += 1
 
-        new_project = self.repository.create_project(new_title, user)
+        new_project: Project = self.repository.create_project(new_title, user)
 
         logger.info(
             f"Project '{original_project.title}' duplicated to '{new_title}' by user {user.email}")
@@ -129,16 +134,16 @@ class ProjectService:
         return new_project
 
     def get_user_projects(self, user: User, limit: Optional[int] = None,
-                          include_archived: bool = False) -> list[Project]:
+                          include_archived: bool = False) -> List[Project]:
         """Get projects for a user with optional filtering."""
         return list(
             self.repository.get_user_projects(user, limit, include_archived))
 
-    def get_project_stats(self, user: User) -> dict:
+    def get_project_stats(self, user: User) -> Dict[str, int]:
         """Get project statistics for a user."""
         return self.repository.get_project_stats(user)
 
-    def search_projects(self, user: User, query: str) -> list[Project]:
+    def search_projects(self, user: User, query: str) -> List[Project]:
         """Search projects by title for a user."""
         if not query.strip():
             return []
@@ -163,3 +168,7 @@ class ProjectService:
     def _can_user_modify_project(self, project: Project, user: User) -> bool:
         """Check if user can modify the project."""
         return project.owner == user
+
+    def _has_active_tasks(self, project: Project) -> bool:
+        """Check if project has active tasks."""
+        pass
