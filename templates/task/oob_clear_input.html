@@ -1,0 +1,11 @@
+{% if project_id %}
+<input type="text"
+       class="form-control search-shadow border-start-0 border-end-0"
+       placeholder="Start typing here to create a task..."
+       id="searchInput-{{ project_id }}"
+       name="searchInput-{{ project_id }}"
+       value=""
+       hx-swap-oob="true">
+{% endif %}
+
+
