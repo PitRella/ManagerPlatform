@@ -1,0 +1,19 @@
+<div class="row border-bottom align-items-center py-3" data-task-id="{{ task.id }}" id="task-row-{{ task.id }}">
+    <div class="col-2 col-md-1 d-flex justify-content-center">
+        <input type="checkbox" class="form-check-input">
+    </div>
+    <div class="col-7 col-md-9 px-1">
+        <span class="task-text" id="task-text-{{ task.id }}">{{ task.text }}</span>
+    </div>
+    <div class="col-3 col-md-2 d-flex justify-content-around px-3 text-black-50 icons">
+        <i class="fa fa-sort fs-5 handle" aria-hidden="true" title="Drag to reorder" draggable="true" style="cursor: grab;"></i>
+        <span class="border-start border-1 mx-2"></span>
+        <i class="fa fa-pencil fs-5 edit-task-btn" aria-hidden="true" title="Edit task" style="cursor: pointer;"
+           hx-get="{% url 'tasks:update' task.pk %}"
+           hx-target="#task-text-{{ task.id }}"
+           hx-swap="outerHTML"></i>
+        <span class="border-start border-1 mx-2"></span>
+        <i class="fa fa-trash fs-5 delete-task-btn" aria-hidden="true" title="Delete task" style="cursor: pointer;"
+           data-task-id="{{ task.id }}"></i>
+    </div>
+</div>

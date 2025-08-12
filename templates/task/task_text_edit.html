@@ -1,0 +1,44 @@
+<form hx-post="{% url 'tasks:update' task.pk %}"
+      hx-target="this"
+      hx-swap="outerHTML"
+      class="d-inline"
+      x-data="{ 
+          text: '{{ task.text|escapejs }}',
+          isValid: false,
+          validateForm() {
+              this.isValid = this.text.trim().length > 0 && this.text.trim().length <= 32;
+          }
+      }"
+      x-init="validateForm()">
+    {% csrf_token %}
+    <input type="text"
+           name="text"
+           class="task-text-input"
+           style="border: 1px solid rgba(255,255,255,0.9); background: transparent; font-weight: 600; font-size: 1rem; color: inherit; padding: 0 .25rem; outline: none; text-shadow: inherit; width: 100%; border-radius: .25rem;"
+           maxlength="32"
+           autofocus="autofocus"
+           aria-label="Edit task text"
+           x-model="text"
+           @input="validateForm()"
+           :class="{ 'is-invalid': text.trim().length > 32, 'is-valid': isValid && text.trim().length > 0 }"
+           _="on keyup[key=='Enter'] if me.value.trim().length > 0 and me.value.trim().length <= 32 trigger submit on closest <form> end">
+    {% if form.text.errors %}
+        <div class="text-danger small mt-1">
+            {% for error in form.text.errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="invalid-feedback" x-show="text.trim().length > 32">
+        Task text cannot exceed 32 characters.
+    </div>
+</form>
+
+
+
+
+
+
+
+
+
