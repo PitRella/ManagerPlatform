@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.views.generic import UpdateView
@@ -11,7 +12,7 @@ from project.models import Project
 class ProjectUpdateView(
     LoginRequiredMixin,
     HTMXResponseMixin[Project],
-    UpdateView
+    UpdateView  # type: ignore
 ):
     """View for updating Project instances.
 
@@ -28,7 +29,9 @@ class ProjectUpdateView(
     form_class = EditForm
     template_name = 'project/edit.html'
 
-    def get_queryset(self):
+    def get_queryset(
+            self
+    ) -> QuerySet[Project]:
         """Get queryset of projects filtered for the current user.
 
         Returns:
@@ -37,14 +40,17 @@ class ProjectUpdateView(
         """
         return Project.objects.for_user(self.request.user)
 
-    def render_htmx_response(self, instance: Project) -> HttpResponse:
+    def render_htmx_response(
+            self,
+            instance: Project  # type: ignore
+    ) -> HttpResponse:
         """Render HTMX response for project title update.
 
         Args:
             instance: Project instance that was updated.
 
         Returns:
-            HttpResponse containing rendered project title template.
+            HttpResponse containing the rendered project title template.
 
         """
         html = render_to_string(

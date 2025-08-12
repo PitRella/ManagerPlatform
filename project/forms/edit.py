@@ -3,8 +3,8 @@ from django import forms
 from project.models import Project
 
 
-class EditForm(forms.ModelForm):
-    """Form for editing project title inline."""
+class EditForm(forms.ModelForm):  # type: ignore
+    """Form for editing the project title inline."""
 
     class Meta:
         model = Project

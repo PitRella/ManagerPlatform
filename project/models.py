@@ -5,15 +5,15 @@ from django.utils.translation import gettext_lazy as _
 from core.mixins.models import TimestampMixin
 
 
-class ProjectManager(models.Manager):
+class ProjectManager(models.Manager):  # type: ignore
     """
-    Custom manager for Project model providing user-specific queries.
+    Custom manager for a Project model providing user-specific queries.
 
     Extends the default Django model manager to add methods
     for filtering projects by user ownership.
     """
 
-    def for_user(self, user) -> models.QuerySet:
+    def for_user(self, user) -> models.QuerySet:  # type: ignore
         """Returns projects for the given user."""
         return self.filter(owner=user)
 
@@ -59,6 +59,6 @@ class Project(TimestampMixin, models.Model):
             )
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Returns the project's title as its string representation."""
         return f"{self.title} ({self.owner.email})"

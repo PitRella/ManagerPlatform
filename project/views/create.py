@@ -10,8 +10,11 @@ from project.forms import CreateForm
 from project.models import Project
 
 
-class ProjectCreateView(LoginRequiredMixin, HTMXResponseMixin[Project],
-                        CreateView):
+class ProjectCreateView(
+    LoginRequiredMixin,
+    HTMXResponseMixin[Project],
+    CreateView  # type: ignore
+):
     """View for creating new projects via HTMX."""
 
     model = Project
@@ -21,7 +24,7 @@ class ProjectCreateView(LoginRequiredMixin, HTMXResponseMixin[Project],
 
     def form_valid(
             self,
-            form: CreateForm
+            form: CreateForm  # type: ignore
     ) -> HttpResponse:
         """Process valid form submission.
 
@@ -35,11 +38,11 @@ class ProjectCreateView(LoginRequiredMixin, HTMXResponseMixin[Project],
 
         """
         form.instance.owner = self.request.user
-        return super().form_valid(form)
+        return super().form_valid(form)  # type: ignore
 
     def render_htmx_response(
             self,
-            instance: Project
+            instance: Project  # type: ignore
     ) -> HttpResponse:
         """Render HTMX response for successful project creation.
 

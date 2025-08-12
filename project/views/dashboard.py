@@ -5,7 +5,7 @@ from django.views.generic import ListView
 from project.models import Project
 
 
-class DashboardView(LoginRequiredMixin, ListView):
+class DashboardView(LoginRequiredMixin, ListView):  # type: ignore
     """
     View for displaying a paginated list of projects on the dashboard.
 

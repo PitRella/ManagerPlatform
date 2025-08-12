@@ -8,7 +8,7 @@ from project.models import Project
 class ProjectDeleteView(
     LoginRequiredMixin,
     HTMXDeleteMixin,
-    DeleteView
+    DeleteView  # type: ignore
 ):
     """View for deleting Project instances.
 
