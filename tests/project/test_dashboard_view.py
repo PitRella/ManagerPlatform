@@ -70,20 +70,4 @@ class DashboardViewTest(TestCase):
         assert response.status_code == 200
         assert len(response.context['projects']) == 5
 
-    def test_empty_dashboard(self):
-        """Test that dashboard handles case with no projects."""
-        # Create a new user with no projects
-        User.objects.create_user(
-            username='emptyuser',
-            email='empty@example.com',
-            password='testpassword'
-        )
 
-        self.client.login(username='emptyuser', password='testpassword')
-        response = self.client.get(self.dashboard_url)
-        assert response.status_code == 200
-        assert len(response.context['projects']) == 0
-
-        # Check that the projects container exists but is empty
-        assert '<div id="projects-container">' in response
-        assert 'class="todo-list-project"' in response

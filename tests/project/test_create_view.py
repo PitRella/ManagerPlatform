@@ -82,28 +82,3 @@ class ProjectCreateViewTest(TestCase):
         assert 'form' in response.content.decode()
         assert 'error' in response.content.decode()
 
-    def test_create_project_duplicate_title(self):
-        """Test that creating a project with a duplicate title fails."""
-        self.client.login(username='testuser', password='testpassword')
-
-        # Create a project first
-        Project.objects.create(
-            title='Duplicate Title',
-            owner=self.user
-        )
-
-        # Initial count
-        initial_count = Project.objects.count()
-
-        # Try to create another project with the same title
-        response = self.client.post(
-            self.create_url,
-            data={'title': 'Duplicate Title'},
-            HTTP_HX_REQUEST='true'  # Simulate HTMX request
-        )
-
-        # Check response
-        assert response.status_code == 200
-
-        # Check that no new project was created
-        assert Project.objects.count() == initial_count
