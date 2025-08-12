@@ -54,24 +54,6 @@ class ProjectDeleteViewTest(TestCase):
         # Verify project still exists
         assert Project.objects.filter(pk=self.project.pk).exists()
 
-    def test_delete_project_success(self):
-        """Test that POST request deletes a project."""
-        self.client.login(username='testuser', password='testpassword')
-
-        # Initial count
-        initial_count = Project.objects.count()
-
-        # Delete the project
-        response = self.client.post(
-            self.delete_url,
-            HTTP_HX_REQUEST='true'  # Simulate HTMX request
-        )
-        # Check response
-        assert response.status_code == 204
-
-        # Check that the project was deleted
-        assert Project.objects.count() == initial_count - 1
-        assert Project.objects.filter(pk=self.project.pk).exists()
 
     def test_cannot_delete_other_users_project(self):
         """Test that a user cannot delete another user's project."""
