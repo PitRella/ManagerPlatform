@@ -23,7 +23,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     # apps
-    'project.apps.ProjectConfig'
+    'project.apps.ProjectConfig',
+    'task.apps.TaskConfig'
 ]
 
 MIDDLEWARE = [

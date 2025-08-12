@@ -460,7 +460,7 @@ class DashboardManager {
     }
 }
 
-// Инициализация при загрузке DOM
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing DashboardManager');
     window.dashboardManager = new DashboardManager();

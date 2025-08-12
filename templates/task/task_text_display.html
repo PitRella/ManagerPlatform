@@ -1,0 +1,6 @@
+<span class="task-text" id="task-text-{{ task.id }}"
+      hx-get="{% url 'tasks:update' task.pk %}"
+      hx-target="this"
+      hx-swap="outerHTML"
+      style="cursor: pointer;"
+      title="Click to edit task">{{ task.text }}</span>
