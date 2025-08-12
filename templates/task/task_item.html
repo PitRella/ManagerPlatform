@@ -1,9 +1,17 @@
-<div class="row border-bottom align-items-center py-3 {% if task.completed %}completed{% endif %}" data-task-id="{{ task.id }}" id="task-row-{{ task.id }}">
+<div class="row border-bottom align-items-center py-3
+{% if task.completed %}
+completed
+{% endif %}"
+     data-task-id="{{ task.id }}"
+     id="task-row-{{ task.id }}">
     <div class="col-2 col-md-1 d-flex justify-content-center">
-        <input type="checkbox" class="form-check-input task-checkbox" data-task-id="{{ task.id }}" {% if task.completed %}checked{% endif %}>
+        <input type="checkbox" class="form-check-input task-checkbox"
+               data-task-id="{{ task.id }}"
+               {% if task.completed %}checked{% endif %}>
     </div>
     <div class="col-7 col-md-9 px-3">
-        <span class="task-text {% if task.completed %}completed{% endif %}" id="task-text-{{ task.id }}"
+        <span class="task-text {% if task.completed %}completed{% endif %}"
+              id="task-text-{{ task.id }}"
               hx-get="{% url 'tasks:update' task.pk %}"
               hx-target="this"
               hx-swap="outerHTML"
@@ -11,15 +19,18 @@
               title="Click to edit task">{{ task.text }}</span>
     </div>
     <div class="col-3 col-md-2 d-flex justify-content-around px-3 text-black-50 icons">
-        <i class="fa fa-sort fs-5 handle" aria-hidden="true" title="Drag to reorder" draggable="true" style="cursor: grab;"></i>
+        <i class="fa fa-sort fs-5 handle" aria-hidden="true"
+           title="Drag to reorder" draggable="true" style="cursor: grab;"></i>
         <span class="border-start border-1 mx-2"></span>
-        <i class="fa fa-pencil fs-5 edit-task-btn" aria-hidden="true" title="Edit task" style="cursor: pointer;"
+        <i class="fa fa-pencil fs-5 edit-task-btn" aria-hidden="true"
+           title="Edit task" style="cursor: pointer;"
            data-task-id="{{ task.id }}"
            hx-get="{% url 'tasks:update' task.pk %}"
            hx-target="#task-text-{{ task.id }}"
            hx-swap="outerHTML"></i>
         <span class="border-start border-1 mx-2"></span>
-        <i class="fa fa-trash fs-5 delete-task-btn" aria-hidden="true" title="Delete task" style="cursor: pointer;"
+        <i class="fa fa-trash fs-5 delete-task-btn" aria-hidden="true"
+           title="Delete task" style="cursor: pointer;"
            data-task-id="{{ task.id }}"></i>
     </div>
 </div>
