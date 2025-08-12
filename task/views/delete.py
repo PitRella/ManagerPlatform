@@ -1,17 +1,37 @@
+from typing import Any
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DeleteView
 from django.http import HttpResponse
+from django.core.exceptions import ValidationError
+
+from core.mixins.views import HTMXResponseMixin
 from task.models import Task
+from task.services import TaskService
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(
+    LoginRequiredMixin,
+    HTMXResponseMixin[Task],
+    DeleteView
+):
     """View for deleting tasks via HTMX."""
+    
     model = Task
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.task_service: TaskService = TaskService()
 
     def delete(self, request, *args, **kwargs):
         """Handle DELETE request."""
-        task = self.get_object()
-        task.delete()
-        return HttpResponse('', status=204)
+        try:
+            self.task_service.delete_task(
+                task_id=self.get_object().id,
+                user=request.user
+            )
+            return HttpResponse('', status=204)
+        except ValidationError as e:
+            return HttpResponse(str(e), status=400)
 
     def post(self, request, *args, **kwargs):
         """Handle POST request for deletion."""
