@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.mixins import TimestampMixin
+from core.mixins.models import TimestampMixin
 
 
 class ProjectManager(models.Manager):
