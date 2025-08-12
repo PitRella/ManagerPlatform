@@ -28,3 +28,4 @@ class EditForm(forms.ModelForm):  # type: ignore
             )
         }
 
+

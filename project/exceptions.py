@@ -24,3 +24,4 @@ class ProjectValidationError(ProjectError):
 class ProjectConflictError(ProjectError):
     """Raised when there's a conflict with project data."""
     pass
+

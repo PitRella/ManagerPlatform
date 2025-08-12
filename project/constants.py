@@ -25,3 +25,4 @@ ERROR_PROJECT_ALREADY_EXISTS = "Project with title '{title}' already exists for 
 ERROR_PROJECT_NOT_FOUND = "Project not found."
 ERROR_PROJECT_NO_PERMISSION = "You don't have permission to perform this action on this project."
 ERROR_PROJECT_HAS_ACTIVE_TASKS = "Cannot delete project with active tasks. Archive it instead."
+
