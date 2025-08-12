@@ -47,19 +47,12 @@ class HTMXResponseMixin(ABC, Generic[M]):
         ...
 
 
-class HTMXDeleteMixin(ABC):
-    @abstractmethod
-    def get_object(
-            self,
-            queryset: Optional[QS] = None
-    ) -> models.Model:
-        ...
-
+class HTMXDeleteMixin:
     def post(
             self,
             request: HttpRequest,
             *args: Any,
             **kwargs: Any
     ) -> HttpResponse:
-        self.get_object().delete()
+        self.get_object().delete()  # type: ignore
         return HttpResponse('', status=204)
