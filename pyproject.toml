@@ -10,13 +10,13 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "django-stubs>=5.2.2",
     "mypy>=1.17.1",
     "ruff>=0.12.7",
 ]
 
 
 [tool.mypy]
-plugins = ["sqlalchemy.ext.mypy.plugin"]
 strict = true
 local_partial_types = true
 warn_unreachable = true
@@ -109,6 +109,7 @@ docstring-code-format = false # Do not format docstrings
     "COM812", # Formatting conflict
     "Q000", # flake8-quotes
     "Q003", # flake8-quotes
+    "RUF012" # TypeVar
 ]
 "manage.py" = [
     "PLC0415" # Import not at top of the file
@@ -132,7 +133,8 @@ docstring-code-format = false # Do not format docstrings
     "COM812", # comma formatting conflicts with formatter
     "Q000", # quote style conflicts with formatter
     "Q003", # mixed quotes conflicts with formatter
-    "PLR2004" # magic value, for status codes
+    "PLR2004", # magic value, for status codes
+    "PT027",
 ]
 
 "src/*.py" = [
