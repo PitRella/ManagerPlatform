@@ -4,10 +4,12 @@ from django.template.loader import render_to_string
 from django.views.generic import (
     CreateView,
 )
+from django.core.exceptions import ValidationError
 
 from core.mixins.views import HTMXResponseMixin
 from project.forms import CreateForm
 from project.models import Project
+from project.services import ProjectService
 
 
 class ProjectCreateView(
@@ -22,13 +24,15 @@ class ProjectCreateView(
     template_name = 'project/create.html'
     success_template = 'project/project_item.html'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.project_service = ProjectService()
+
     def form_valid(
             self,
             form: CreateForm  # type: ignore
     ) -> HttpResponse:
-        """Process valid form submission.
-
-        Sets the project owner to the current user and saves the form.
+        """Process valid form submission using service layer.
 
         Args:
             form: Validated CreateForm instance containing project data
@@ -37,8 +41,15 @@ class ProjectCreateView(
             HttpResponse with rendered success template
 
         """
-        form.instance.owner = self.request.user
-        return super().form_valid(form)  # type: ignore
+        try:
+            project = self.project_service.create_project(
+                title=form.cleaned_data['title'],
+                user=self.request.user
+            )
+            return self.render_htmx_response(project)
+        except ValidationError as e:
+            form.add_error('title', e)
+            return self.form_invalid(form)
 
     def render_htmx_response(
             self,
@@ -59,3 +70,4 @@ class ProjectCreateView(
             request=self.request
         )
         return HttpResponse(html)
+

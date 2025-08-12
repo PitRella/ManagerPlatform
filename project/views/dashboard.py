@@ -1,16 +1,16 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.views.generic import ListView
 
 from project.models import Project
+from project.views.base import ProjectBaseView
 
 
-class DashboardView(LoginRequiredMixin, ListView):  # type: ignore
+class DashboardView(ProjectBaseView, ListView):  # type: ignore
     """
     View for displaying a paginated list of projects on the dashboard.
 
     Inherits from:
-        LoginRequiredMixin: Ensures that only authenticated users can access
+        ProjectBaseView: Provides common project functionality
         ListView: Provides pagination and list display functionality
 
     Attributes:
@@ -32,3 +32,4 @@ class DashboardView(LoginRequiredMixin, ListView):  # type: ignore
         return Project.objects.for_user(
             self.request.user
         )
+

@@ -3,10 +3,12 @@ from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.views.generic import UpdateView
+from django.core.exceptions import ValidationError
 
 from core.mixins.views import HTMXResponseMixin
 from project.forms import EditForm
 from project.models import Project
+from project.services import ProjectService
 
 
 class ProjectUpdateView(
@@ -29,6 +31,10 @@ class ProjectUpdateView(
     form_class = EditForm
     template_name = 'project/edit.html'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.project_service = ProjectService()
+
     def get_queryset(
             self
     ) -> QuerySet[Project]:
@@ -39,6 +45,19 @@ class ProjectUpdateView(
 
         """
         return Project.objects.for_user(self.request.user)
+
+    def form_valid(self, form):
+        """Process valid form submission using service layer."""
+        try:
+            project = self.project_service.update_project(
+                project_id=self.get_object().id,
+                title=form.cleaned_data['title'],
+                user=self.request.user
+            )
+            return self.render_htmx_response(project)
+        except ValidationError as e:
+            form.add_error('title', e)
+            return self.form_invalid(form)
 
     def render_htmx_response(
             self,
@@ -62,3 +81,4 @@ class ProjectUpdateView(
             request=self.request
         )
         return HttpResponse(html)
+

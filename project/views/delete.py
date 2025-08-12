@@ -1,8 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DeleteView
+from django.http import HttpResponse
+from django.core.exceptions import ValidationError
 
 from core.mixins.views import HTMXDeleteMixin
 from project.models import Project
+from project.services import ProjectService
 
 
 class ProjectDeleteView(
@@ -24,3 +27,19 @@ class ProjectDeleteView(
 
     model = Project
     template_name = 'project/delete.html'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.project_service = ProjectService()
+
+    def post(self, request, *args, **kwargs):
+        """Handle POST request for HTMX-based deletion using service layer."""
+        try:
+            self.project_service.delete_project(
+                project_id=self.get_object().id,
+                user=request.user
+            )
+            return HttpResponse('', status=204)
+        except ValidationError as e:
+            return HttpResponse(str(e), status=400)
+

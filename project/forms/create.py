@@ -27,3 +27,4 @@ class CreateForm(forms.ModelForm):  # type: ignore
             if not title:
                 raise forms.ValidationError('Project title cannot be empty.')
         return title  # type: ignore
+
