@@ -15,12 +15,8 @@
 .button-gradient-green-dark{
     background: linear-gradient(180deg, #91c4aa, #528a69);
 }
-.gradient-blue-dark {
-    background: linear-gradient(180deg, #5180bd, #35619e);
-}
-.gradient-grey-white {
-    background: linear-gradient(180deg, #cdcdcd, #dbe1e4);
-}
+
+
 .gradient-green-dark{
     background: linear-gradient(180deg, #91c4aa, #528a69);
     width: 100%;
@@ -28,9 +24,7 @@
 .rounded-bottom-only{
     border-radius: 0 0 1.5rem 1.5rem;
 }
-.rounded-right-only{
-    border-radius: 0 0.5rem 0.5rem 0;
-}
+
 .todo-list {
     position: relative;
 }
@@ -44,7 +38,7 @@
     pointer-events: none;
     z-index: 2;
 
-    /* три одинаковые "тонкие" градиентные полоски */
+    
     background-image:
             linear-gradient(#dee2e6, #dee2e6),
             linear-gradient(#dee2e6, #dee2e6),
@@ -91,14 +85,14 @@
     opacity: 1;
 }
 
-/* Зачеркнутый текст для выполненных задач */
+
 .task-text.completed {
     text-decoration: line-through;
     color: #6c757d;
     font-style: italic;
 }
 
-/* Стиль для строки с выполненной задачей */
+
 .todo-list .row.completed {
     background-color: #f8f9fa;
     opacity: 0.8;
@@ -107,22 +101,17 @@
 .todo-list .row.completed:hover {
     background-color: #e9ecef;
 }
-/* Адаптив для md (Bootstrap) — поменяем проценты */
+
 @media (min-width: 768px) {
     .todo-list::before{
         background-position: 7% 0, calc(6.5% + 0.75rem) 0, 83.3333% 0;
     }
 }
-.border-custom{
-    height: 30px;
-    border-right: .5px solid rgba(255, 255, 255, 0.2);
-}
+
 .green-border{
     border: 1px solid rgb(80, 116, 92);
 }
-.dark-border{
-    border: 1px solid rgb(54, 89, 127);
-}
+
 .white-border{
     border: 1px solid rgb(185, 185, 173);
 
@@ -140,32 +129,15 @@
     display: block;
     max-width: 100%;
 }
-.project-title-input {
-    font: inherit;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #fff;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    display: block;
-    max-width: 100%;
-    border: 1px solid rgba(255,255,255,0.9);
-    border-radius: .25rem;
-    padding: 0 .25rem;
-}
-.project-title-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 .2rem rgba(255,255,255,0.25);
-}
+
 
 .todo-list-project .header-text-shadow .border-start {
     position: relative;
     display: inline-block;
-    width: 0; /* линия рисуется псевдоэлементом */
-    height: 1.25rem; /* высота разделителя */
+    width: 0;
+    height: 1.25rem;
     vertical-align: middle;
-    border-left: none !important; /* не опираться на bootstrap-бордер */
+    border-left: none !important;
 }
 .todo-list-project .header-text-shadow .border-start::before {
     content: "";
@@ -177,7 +149,7 @@
     background-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Разрешаем среднему столбцу с заголовком сжиматься во flex, чтобы текст не налезал на иконки */
+
 .todo-list-project .header-text-shadow > .col-8,
 .todo-list-project .header-text-shadow > .col-md-10 {
     min-width: 0;
