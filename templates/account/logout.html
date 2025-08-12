@@ -1,0 +1,45 @@
+{% extends "_base.html" %}
+{% load i18n %}
+{% load account %}
+
+{% block title %}{% trans "Sign Out" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center project-gradient-blue-dark">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0">
+                <div class="card-header project-gradient-grey-white text-center py-4">
+                    <h2 class="mb-0 project-text-shadow text-dark">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        {% trans "Sign Out" %}
+                    </h2>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <p class="text-muted mb-4">
+                        {% trans 'Are you sure you want to sign out?' %}
+                    </p>
+
+                    <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                        {% endif %}
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn button-gradient-green-dark text-white" type="submit">
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                {% trans 'Sign Out' %}
+                            </button>
+                            <a href="{% url 'projects:dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                {% trans 'Cancel' %}
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
