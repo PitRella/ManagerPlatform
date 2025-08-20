@@ -29,7 +29,7 @@ class TaskDeleteView(
                 task_id=self.get_object().id,
                 user=request.user
             )
-            return HttpResponse('', status=204)
+            return HttpResponse('', status=200)
         except ValidationError as e:
             return HttpResponse(str(e), status=400)
 
