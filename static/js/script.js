@@ -37,11 +37,11 @@ class DashboardManager {
             this.handleProjectDelete(e);
         } else if (e.target.classList.contains('edit-project-btn')) {
             this.handleProjectEdit(e);
-        } else if (e.target.classList.contains('delete-task-btn')) {
-            this.handleTaskDelete(e);
-        } else if (e.target.classList.contains('edit-task-btn')) {
-            this.handleTaskEdit(e);
-        }
+        } // else if (e.target.classList.contains('delete-task-btn')) {
+        //     this.handleTaskDelete(e);
+        // } else if (e.target.classList.contains('edit-task-btn')) {
+        //     this.handleTaskEdit(e);
+        // }
     }
 
     handleChange(e) {
