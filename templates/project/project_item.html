@@ -57,7 +57,7 @@
                 <div class="col-3 col-md-2 d-flex justify-content-center">
                     <button type="button"
                             class="btn btn-success gradient-green-dark green-border add-task-btn"
-                            hx-post="{% url 'tasks:create_simple' project.id %}"
+                            hx-post="{% url 'tasks:create' project.id %}"
                             hx-target="#tasks-container-{{ project.id }}"
                             hx-swap="beforeend"
                             hx-include="[name='searchInput-{{ project.id }}']"
