@@ -127,7 +127,7 @@ class TaskRepository:
         for item in order_data:
             task_id = item.get('id')
             position = item.get('position')
-            
+
             if task_id and position is not None:
                 try:
                     task = self.get_task_by_id(task_id, user)
@@ -135,7 +135,7 @@ class TaskRepository:
                     task.save(update_fields=['priority'])
                 except (ValueError, self.model.DoesNotExist):
                     continue
-        
+
         return True
 
     def toggle_task_completion(
@@ -160,11 +160,11 @@ class TaskRepository:
             project_id=project_id,
             project__owner=user
         )
-        
+
         total_tasks = tasks.count()
         completed_tasks = tasks.filter(completed=True).count()
         active_tasks = total_tasks - completed_tasks
-        
+
         return {
             'total_tasks': total_tasks,
             'completed_tasks': completed_tasks,

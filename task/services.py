@@ -150,16 +150,13 @@ class TaskService:
         """Reorder tasks with business logic validation."""
         if not order_data:
             raise ValidationError("Order data cannot be empty")
-
         try:
             result = self.repository.reorder_tasks(order_data, user)
-
-            logger.info(f"Tasks reordered by user {user.email}")
-
+            logger.info(f"Tasks reordered by user %s",user.email)
             return result
         except Exception as e:
-            logger.error(f"Failed to reorder tasks: {e}")
-            raise ValidationError(ERROR_TASK_REORDER_FAILED)
+            logger.error(f"Failed to reorder tasks: %s", e)
+            raise ValidationError(ERROR_TASK_REORDER_FAILED) from None
 
     def get_project_tasks(
             self,
