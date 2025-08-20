@@ -59,24 +59,9 @@ class TaskCreateView(
     ) -> HttpResponse:
         """Render HTMX response for successful task creation."""
         task = cast(Task, instance)
-        project_id: int | None = getattr(task, 'project_id', None)
-
+        
         task_html = render_to_string('task/task_item.html', {
             'task': task
         }, request=self.request)
 
-        response_html = task_html
-
-        if project_id:
-            oob_clear_input = render_to_string('task/oob_clear_input.html', {
-                'project_id': project_id
-            }, request=self.request)
-
-            oob_remove_message = render_to_string(
-                'task/oob_remove_no_tasks.html', {
-                    'project_id': project_id
-                }, request=self.request)
-
-            response_html += oob_clear_input + oob_remove_message
-
-        return HttpResponse(response_html)
+        return HttpResponse(task_html)

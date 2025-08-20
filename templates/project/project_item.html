@@ -62,7 +62,8 @@
                             hx-swap="beforeend"
                             hx-include="[name='searchInput-{{ project.id }}']"
                             hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                            hx-trigger="click">
+                            hx-trigger="click"
+                            hx-on::after-request="handleTaskCreateSuccess({{ project.id }})">
                         Add Task
                     </button>
                 </div>

@@ -466,3 +466,18 @@ document.addEventListener('DOMContentLoaded', function() {
     window.dashboardManager = new DashboardManager();
     console.log('addTask function available:', typeof window.addTask);
 });
+
+// Global function for handling task creation success
+function handleTaskCreateSuccess(projectId) {
+    // Clear the input field
+    const inputField = document.getElementById(`searchInput-${projectId}`);
+    if (inputField) {
+        inputField.value = '';
+    }
+    
+    // Remove "no tasks" message if it exists
+    const noTasksMsg = document.getElementById(`no-tasks-message-${projectId}`);
+    if (noTasksMsg) {
+        noTasksMsg.remove();
+    }
+}
