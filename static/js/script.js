@@ -102,7 +102,7 @@ class DashboardManager {
             return;
         }
 
-        fetch(`/dashboard/${projectId}/delete/`, {
+        fetch(`/${projectId}/delete/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': csrfToken
@@ -123,7 +123,7 @@ class DashboardManager {
     }
 
     editProject(projectId, titleElement) {
-        htmx.ajax('GET', `/dashboard/${projectId}/update/`, {
+        htmx.ajax('GET', `/${projectId}/update/`, {
             target: titleElement,
             swap: 'outerHTML'
         }).then(() => {
