@@ -44,28 +44,7 @@ A modern, responsive task management platform built with Django and Bootstrap. O
 
 ### Option 1: Docker (Recommended)
 
-#### 1. Clone the Repository
-
-```bash
-git clone <repository-url>
-cd ManagerPlatform
-```
-
-#### 2. Start with Docker Compose
-
-```bash
-docker-compose up --build
-```
-
-The application will be available at `http://127.0.0.1:8000/`
-
-#### 3. Create a Superuser (Optional)
-
-```bash
-docker-compose exec web uv run python manage.py createsuperuser
-```
-
-### Option 2: Local Development
+**⚠️ Important**: Create the `.env` file BEFORE running Docker to ensure proper configuration.
 
 #### 1. Clone the Repository
 
@@ -74,13 +53,7 @@ git clone <repository-url>
 cd ManagerPlatform
 ```
 
-#### 2. Install Dependencies
-
-```bash
-uv sync
-```
-
-#### 3. Environment Configuration
+#### 2. Environment Configuration
 
 Create a `.env` file in the project root:
 
@@ -93,6 +66,64 @@ LOG_LEVEL=DEBUG
 # Database (for production, use PostgreSQL)
 DATABASE_URL=sqlite:///db.sqlite3
 
+```
+
+**Note**: Replace `your-secret-key-here` with a secure secret key. You can generate one using:
+
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+#### 3. Start with Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+The application will be available at `http://127.0.0.1:8000/`
+
+#### 4. Create a Superuser (Optional)
+
+```bash
+docker-compose exec web uv run python manage.py createsuperuser
+```
+
+### Option 2: Local Development
+
+**⚠️ Important**: Make sure to create the `.env` file BEFORE installing dependencies to avoid Django configuration errors.
+
+#### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd ManagerPlatform
+```
+
+#### 2. Environment Configuration
+
+Create a `.env` file in the project root:
+
+```bash
+# Django Settings
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+LOG_LEVEL=DEBUG
+
+# Database (for production, use PostgreSQL)
+DATABASE_URL=sqlite:///db.sqlite3
+
+```
+
+**Note**: Replace `your-secret-key-here` with a secure secret key. You can generate one using:
+
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+#### 3. Install Dependencies
+
+```bash
+uv sync
 ```
 
 #### 4. Run Migrations
