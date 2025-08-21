@@ -45,7 +45,7 @@ class TaskEditForm(forms.ModelForm):
                         'text-shadow: inherit; width: 100%; '
                         'border-radius: .25rem;'
                     ),
-                    'maxlength': '64',
+                    'maxlength': '32',
                     'autofocus': 'autofocus',
                     'aria-label': 'Edit task text'
                 }

@@ -12,9 +12,6 @@ completed
     <div class="col-7 col-md-9 px-3">
         <span class="task-text {% if task.completed %}completed{% endif %}"
               id="task-text-{{ task.id }}"
-              hx-get="{% url 'tasks:update' task.pk %}"
-              hx-target="this"
-              hx-swap="outerHTML"
               style="cursor: pointer;"
               title="Click to edit task">{{ task.text }}</span>
     </div>
@@ -24,10 +21,7 @@ completed
         <span class="border-start border-1 mx-2"></span>
         <i class="bi bi-pen edit-task-btn" aria-hidden="true"
            title="Edit task" style="cursor: pointer;"
-           data-task-id="{{ task.id }}"
-           hx-get="{% url 'tasks:update' task.pk %}"
-           hx-target="#task-text-{{ task.id }}"
-           hx-swap="outerHTML"></i>
+           data-task-id="{{ task.id }}"></i>
         <span class="border-start border-1 mx-2"></span>
         <i class="bi bi-trash3 delete-task-btn" aria-hidden="true"
            title="Delete task" style="cursor: pointer;"
