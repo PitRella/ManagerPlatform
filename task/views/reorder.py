@@ -12,7 +12,6 @@ from task.models import Task
 from task.services import TaskService
 
 
-@method_decorator(require_POST, name='dispatch')
 class TaskReorderView(
     LoginRequiredMixin,
     View
