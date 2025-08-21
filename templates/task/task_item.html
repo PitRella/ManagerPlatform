@@ -31,6 +31,9 @@ completed
         <span class="border-start border-1 mx-2"></span>
         <i class="bi bi-trash3 delete-task-btn" aria-hidden="true"
            title="Delete task" style="cursor: pointer;"
-           data-task-id="{{ task.id }}"></i>
+           data-task-id="{{ task.id }}"
+           hx-delete="{% url 'tasks:delete' task.pk %}"
+           hx-target="[data-task-id='{{ task.id }}']"
+           hx-swap="outerHTML"></i>
     </div>
 </div>
