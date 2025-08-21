@@ -15,11 +15,10 @@ from task.services import TaskService
 @method_decorator(require_POST, name='dispatch')
 class TaskReorderView(
     LoginRequiredMixin,
-    HTMXResponseMixin[Task],
     View
 ):
     """View for reordering tasks via drag and drop."""
-    
+
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.task_service: TaskService = TaskService()
@@ -36,7 +35,7 @@ class TaskReorderView(
             )
 
             return JsonResponse({'status': 'ok'})
-            
+
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         except ValidationError as e:

@@ -30,7 +30,7 @@ class Task(models.Model):
         db_table = 'tasks'
         verbose_name = _('Task')
         verbose_name_plural = _('Tasks')
-        ordering = ['-priority']
+        ordering = ['priority', 'id']
 
     def __str__(self) -> str:
         return self.text

@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DeleteView
@@ -11,8 +12,7 @@ from task.services import TaskService
 
 class TaskDeleteView(
     LoginRequiredMixin,
-    HTMXResponseMixin[Task],
-    DeleteView
+    DeleteView # type: ignore
 ):
     """View for deleting tasks via HTMX."""
     
@@ -29,7 +29,7 @@ class TaskDeleteView(
                 task_id=self.get_object().id,
                 user=request.user
             )
-            return HttpResponse('', status=204)
+            return HttpResponse('', status=200)
         except ValidationError as e:
             return HttpResponse(str(e), status=400)
 

@@ -37,11 +37,11 @@ class DashboardManager {
             this.handleProjectDelete(e);
         } else if (e.target.classList.contains('edit-project-btn')) {
             this.handleProjectEdit(e);
-        } else if (e.target.classList.contains('delete-task-btn')) {
-            this.handleTaskDelete(e);
-        } else if (e.target.classList.contains('edit-task-btn')) {
-            this.handleTaskEdit(e);
-        }
+        } // else if (e.target.classList.contains('delete-task-btn')) {
+        //     this.handleTaskDelete(e);
+        // } else if (e.target.classList.contains('edit-task-btn')) {
+        //     this.handleTaskEdit(e);
+        // }
     }
 
     handleChange(e) {
@@ -102,7 +102,7 @@ class DashboardManager {
             return;
         }
 
-        fetch(`/dashboard/${projectId}/delete/`, {
+        fetch(`/${projectId}/delete/`, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': csrfToken
@@ -123,7 +123,7 @@ class DashboardManager {
     }
 
     editProject(projectId, titleElement) {
-        htmx.ajax('GET', `/dashboard/${projectId}/update/`, {
+        htmx.ajax('GET', `/${projectId}/update/`, {
             target: titleElement,
             swap: 'outerHTML'
         }).then(() => {
@@ -466,3 +466,18 @@ document.addEventListener('DOMContentLoaded', function() {
     window.dashboardManager = new DashboardManager();
     console.log('addTask function available:', typeof window.addTask);
 });
+
+// Global function for handling task creation success
+function handleTaskCreateSuccess(projectId) {
+    // Clear the input field
+    const inputField = document.getElementById(`searchInput-${projectId}`);
+    if (inputField) {
+        inputField.value = '';
+    }
+    
+    // Remove "no tasks" message if it exists
+    const noTasksMsg = document.getElementById(`no-tasks-message-${projectId}`);
+    if (noTasksMsg) {
+        noTasksMsg.remove();
+    }
+}
