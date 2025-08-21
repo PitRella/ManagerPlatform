@@ -1,6 +1,4 @@
-<span class="task-text" id="task-text-{{ task.id }}"
-      hx-get="{% url 'tasks:update' task.pk %}"
-      hx-target="this"
-      hx-swap="outerHTML"
+<span class="task-text {% if task.completed %}completed{% endif %}" id="task-text-{{ task.id }}"
       style="cursor: pointer;"
-      title="Click to edit task">{{ task.text }}</span>
+      title="Click to edit task"
+      onclick="window.dashboardManager.editTask('{{ task.id }}', this)">{{ task.text }}</span>
