@@ -37,11 +37,11 @@ class DashboardManager {
             this.handleProjectDelete(e);
         } else if (e.target.classList.contains('edit-project-btn')) {
             this.handleProjectEdit(e);
-        } // else if (e.target.classList.contains('delete-task-btn')) {
-        //     this.handleTaskDelete(e);
-        // } else if (e.target.classList.contains('edit-task-btn')) {
-        //     this.handleTaskEdit(e);
-        // }
+        } else if (e.target.classList.contains('delete-task-btn')) {
+            this.handleTaskDelete(e);
+        } else if (e.target.classList.contains('edit-task-btn')) {
+            this.handleTaskEdit(e);
+        }
     }
 
     handleChange(e) {
@@ -131,6 +131,15 @@ class DashboardManager {
         });
     }
 
+    editTask(taskId, textElement) {
+        htmx.ajax('GET', `/tasks/${taskId}/update/`, {
+            target: textElement,
+            swap: 'outerHTML'
+        }).then(() => {
+            this.reenableButtons();
+        });
+    }
+
     handleTaskEdit(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -141,16 +150,13 @@ class DashboardManager {
         }
 
         const taskId = e.target.dataset.taskId;
+        const textElement = e.target.closest('.row').querySelector('.task-text');
+
         console.log('Task edit clicked, taskId:', taskId);
 
         // Disable the button to prevent multiple clicks
         e.target.disabled = true;
-        
-        // TODO: Implement task editing functionality
-        console.log('Task editing not implemented yet');
-        
-        // Re-enable the button
-        e.target.disabled = false;
+        this.editTask(taskId, textElement);
     }
 
     handleTaskDelete(e) {
