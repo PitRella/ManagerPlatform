@@ -35,10 +35,7 @@ class TaskUpdateView(
                 text=form.cleaned_data['text']
             )
             
-            html = render_to_string('task/task_text_display.html', {
-                'task': task
-            }, request=self.request)
-            return HttpResponse(html)
+            return self.render_htmx_response(task)
             
         except ValidationError as e:
             form.add_error('text', e)
@@ -51,3 +48,25 @@ class TaskUpdateView(
             'task': self.get_object()
         }, request=self.request)
         return HttpResponse(html, status=422)
+
+    def render_htmx_response(
+            self,
+            instance: Task
+    ) -> HttpResponse:
+        """Render HTMX response for task text update.
+
+        Args:
+            instance: Task instance that was updated.
+
+        Returns:
+            HttpResponse containing the rendered task text template.
+
+        """
+        html = render_to_string(
+            'task/task_text_display.html',
+            {
+                'task': instance
+            },
+            request=self.request
+        )
+        return HttpResponse(html)
